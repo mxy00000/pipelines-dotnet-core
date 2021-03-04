@@ -8,8 +8,6 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'
 
 stages:
 - stage: Build
@@ -24,7 +22,7 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'DockerHub'
-        repository: 'dotnetcoresample'
+        repository: 'mxy00000/dotnetcoresample'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(versiontag)'
