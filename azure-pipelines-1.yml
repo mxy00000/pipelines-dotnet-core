@@ -26,7 +26,7 @@ stages:
         repository: 'mxy00000/dotnetcoresample'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-        tags: '$(versiontag)'
+        tags: '$(Build.BuildId)'
 
 
     
