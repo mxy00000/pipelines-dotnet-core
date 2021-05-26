@@ -1,0 +1,43 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- dockerci
+
+resources:
+- repo: self
+
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'DockerHub'
+        repository: 'mxy00000/dotnetcoresample'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(Build.BuildId)'
+        
+    - task: CopyFiles@2
+      displayName: 'Copy file to artifactstagingdirectory'
+      inputs:
+        SourceFolder: 'deploymentfile'
+        Contents: '**'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        OverWrite: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish yaml file to build artifacts '
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'Artifacts'
+        publishLocation: 'Container'
