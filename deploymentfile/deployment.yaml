@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-core-sample
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dotnet-core-sample
+  template:
+    metadata:
+      labels:
+        app: dotnet-core-sample
+    spec:
+      containers:
+      - name: dotnet-core-sample
+        image: {image}
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-core-sample
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: dotnet-core-sample
