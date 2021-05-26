@@ -27,6 +27,18 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(Build.BuildId)'
+        
+    - task: CopyFiles@2
+      displayName: 'Copy file to artifactstagingdirectory'
+      inputs:
+        SourceFolder: 'deploymentfile'
+        Contents: '**'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        OverWrite: true
 
-
-    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish yaml file to build artifacts '
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'Artifacts'
+        publishLocation: 'Container'
